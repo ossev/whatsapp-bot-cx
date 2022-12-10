@@ -64,12 +64,12 @@ const checkEnvFile = () => {
  * @param {*} session 
  * @param {*} cb 
  */
-const createClient =  () => {
+const createClient =  () => {puppeteer
     client = new Client({
         authStrategy: new LocalAuth(
             {dataPath: './sessions/',
             clientId: 'bot'}),
-        puppeteer: { headless: false }
+        puppeteer: { headless: false, args: ['--no-sandbox'] }
  
     });
 }

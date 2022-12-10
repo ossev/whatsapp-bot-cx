@@ -54,10 +54,10 @@ const sendMedia = (client, number = null, fileName = null) => {
  * Enviamos un mensaje simple (texto) a nuestro cliente
  * @param {*} number 
  */
-const sendMessage = async (client, number = null, text = null, trigger = null) => {
+const sendMessage = async (client, number = null, message = null, trigger = null) => {
    setTimeout(async () => {
     number = cleanNumber(number)
-    const message = text
+    console.log(message)
     client.sendMessage(number, message);
     await readChat(number, message, trigger)
     console.log(`⚡⚡⚡ Enviando mensajes....`);
@@ -74,7 +74,7 @@ const sendMessageButton = async (client, number = null, text = null, actionButto
     let button = new Buttons(message,[...buttons], title, footer);
     client.sendMessage(number, button);
 
-    console.log(`⚡⚡⚡ Enviando mensajes....`);
+    console.log(`⚡⚡⚡ Enviando mensajes button....`);
 }
 
 

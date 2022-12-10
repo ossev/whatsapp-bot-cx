@@ -46,10 +46,10 @@ const listenMessage = () => client.on('message', async msg => {
     /**
      * Guardamos el archivo multimedia que envia
      */
-    if (process.env.SAVE_MEDIA && hasMedia) {
-        const media = await msg.downloadMedia();
-        saveMedia(media);
-    }
+    // if (process.env.SAVE_MEDIA && hasMedia) {
+    //     const media = await msg.downloadMedia();
+    //     saveMedia(media);
+    // }
 
     /**
      * Si estas usando dialogflow solo manejamos una funcion todo es IA
@@ -58,7 +58,13 @@ const listenMessage = () => client.on('message', async msg => {
     if (process.env.DATABASE === 'dialogflow') {
         if (!message.length) return;
         const response = await bothResponse(message, number);
-        await sendMessage(client, from, response.replyMessage);
+        
+        for (const message of response.replyMessage) {
+            if (message.text) {
+            await sendMessage(client, from, message.text.text[0]);
+            }
+        }
+
         if (response.media) {
             sendMedia(client, from, response.media);
         }
@@ -128,7 +134,7 @@ const listenMessage = () => client.on('message', async msg => {
 
 client = new Client({
     authStrategy: new LocalAuth(),
-    puppeteer: { headless: true }
+    puppeteer: { headless: true, args: ['--no-sandbox'] }
 });
 
 client.on('qr', qr => generateImage(qr, () => {
